@@ -25,7 +25,7 @@ describe('Communication test', () => {
           contact: contact._id,
           contacted: [{
             _id: expect.anything(),
-            date: '2020-08-15T07:00:00.000Z',
+            date: expect.any(String),
             method: 'LinkedIn',
             notes: 'sent a message asking for informational interview',
             nextSteps: 'wait for response'
@@ -63,7 +63,7 @@ describe('Communication test', () => {
       .then(res => {
         expect(res.body).toEqual({
           ...communication,
-          contacted: [{ _id: expect.anything(), date: '2020-08-20T07:00:00.000Z', method: 'email', notes: 'sent intro email' }]
+          contacted: [{ _id: expect.anything(), date: expect.any(String),method: 'email', notes: 'sent intro email' }]
         });
       });
   });
