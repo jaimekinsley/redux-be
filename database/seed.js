@@ -9,7 +9,7 @@ module.exports = async({ contacts = 10, communications = 25 } = {}) => {
   const createdContacts = await Contact.create([...Array(contacts)].map(() => ({
     name: chance.name(),
     communicationMedium: chance.pickone(communicationTypes),
-    imageUrl: chance.url()
+    imageUrl: 'https://placekeanu.com/200/300'
   })));
 
   await Communication.create([...Array(communications)].map(() => ({
