@@ -6,7 +6,7 @@ const connect = require('../lib/utils/connect');
 const request = require('supertest');
 const app = require('../lib/app');
 
-describe('redux-be routes', () => {
+describe('auth routes', () => {
   beforeAll(async() => {
     const uri = await mongod.getUri();
     return connect(uri);
@@ -19,5 +19,21 @@ describe('redux-be routes', () => {
   afterAll(async() => {
     await mongoose.connection.close();
     return mongod.stop();
+  });
+  it('signs up a user', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'test@test.com',
+        password: 'password',
+        profileImage: 'http://photo.com'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          email: 'test@test.com',
+          profileImage: 'http://photo.com'
+        });
+      });
   });
 });
