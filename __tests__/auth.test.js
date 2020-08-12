@@ -74,4 +74,26 @@ describe('auth routes', () => {
         });
       });
   });
+
+  it('verifies a logged in user', async() => {
+    await User.create({
+      email: 'another@test.com',
+      password: 'password'
+    });
+
+    const agent = request.agent(app);
+    return agent
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'another@test.com',
+        password: 'password'
+      })
+      .then(() => agent.get('/api/v1/auth/verify'))
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          email: 'another@test.com',
+        });
+      });
+  });
 });
