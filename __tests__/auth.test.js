@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongod = new MongoMemoryServer();
 const mongoose = require('mongoose');
@@ -55,6 +56,21 @@ describe('auth routes', () => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           email: 'test@test.com',
+        });
+      });
+  });
+
+  it('verifies a signed up user', () => {
+    // use agent because it can store cookies
+    const agent = request.agent(app);
+    return agent
+      .post('/api/v1/auth/signup')
+      .send({ email: 'user@test.com', password: 'password' })
+      .then(() => agent.get('/api/v1/auth/verify'))
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          email: 'user@test.com'
         });
       });
   });
